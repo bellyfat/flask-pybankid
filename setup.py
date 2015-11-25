@@ -2,14 +2,30 @@
 # -*- coding: utf-8 -*-
 """
 Flask-PyBankID
---------------
+-------------
 
-A Flask tool for using PyBankID on your site.
+A Flask tool for using `PyBankID <https://github.com/hbldh/pybankid>`_ on your site.
+
+Installation
+============
+
+Flask-PyMongo is pip-installable:
+
+    pip install Flask-PyBankID
+
+You can install the latest development snapshot like so:
+
+    pip install https://github.com/hbldh/pybankid/tarball/master#egg=Flask-PyBankID
+
+Development
+===========
+
+Source code is hosted in `GitHub <https://github.com/hbldh/flask-pybankid>`_.
+
 """
 
 from __future__ import division
 from __future__ import print_function
-#from __future__ import unicode_literals
 from __future__ import absolute_import
 
 from setuptools import setup
@@ -17,24 +33,22 @@ from setuptools import setup
 
 setup(
     name='Flask-PyBankID',
-    version='1.0',
+    version='0.1.0',
     url='https://github.com/hbldh/flask-pybankid/',
     license='MIT',
     author='Henrik Blidh',
     author_email='henrik.blidh@nedomkull.com',
-    description='Flask Extension for BankID client',
+    description='Flask Extension for PyBankID client',
     long_description=__doc__,
-    packages=['flask_sqlite3'],
+    py_modules=['flask_pybankid'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',
     install_requires=[
-        'Flask',
-        'pybankid>=0.3.0',
-        'requests>=2.7.0',
-        'suds-jurko>=0.6',
-        'six>=1.9.0'
+        'Flask>=0.10',
+        'pybankid>=0.3.1'
     ],
+    test_suite="tests",
     classifiers=[
         'Environment :: Web Environment',
         'Development Status :: 4 - Beta',
