@@ -81,7 +81,7 @@ class PyBankID(object):
             return jsonify(**response)
 
     def _sign(self, personal_number):
-        text_to_sign = request.args.get('text', '')
+        text_to_sign = request.args.get('userVisibleData', '')
         try:
             response = self.client.sign(text_to_sign.encode('utf8'), personal_number)
         except exceptions.BankIDError as e:
@@ -122,7 +122,7 @@ class FlaskPyBankIDError(Exception):
     @classmethod
     def create_from_pybankid_exception(cls, exception):
         return cls("{0}: {1}".format(
-            exception.__class__.__name__, exception.message),
+            exception.__class__.__name__, str(exception)),
             _exception_class_to_status_code.get(exception.__class__))
 
     def to_dict(self):

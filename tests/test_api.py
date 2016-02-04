@@ -45,6 +45,7 @@ def get_random_personal_number():
 
         def digits_of(n):
             return [int(i) for i in str(n)]
+
         id_ = int(id_) * 10
         digits = digits_of(id_)
         checksum = sum(digits[-1::-2])
@@ -63,7 +64,6 @@ def get_random_personal_number():
 
 
 class TestFlaskPyBankID(unittest.TestCase):
-
     def setUp(self):
         self.certificate_file, self.key_file = \
             bankid.create_bankid_test_server_cert_and_key(tempfile.gettempdir())
@@ -89,28 +89,28 @@ class TestFlaskPyBankID(unittest.TestCase):
 
         out = self.bankid._authenticate(get_random_personal_number())
         assert out.status_code == 200
-        response_dict = json.loads(out.data)
+        response_dict = json.loads(out.data.decode("utf-8"))
         # UUID.__init__ performs the UUID compliance assertion.
         assert isinstance(uuid.UUID(response_dict.get('orderRef'), version=4), uuid.UUID)
         collect_status = self.bankid._collect(response_dict.get('orderRef'))
         assert collect_status.status_code == 200
-        response_dict = json.loads(collect_status.data)
+        response_dict = json.loads(collect_status.data.decode("utf-8"))
         assert response_dict.get('progressStatus') in ('OUTSTANDING_TRANSACTION', 'NO_CLIENT')
 
     def test_invalid_orderref_raises_error(self):
         out = self.bankid._collect('invalid-uuid')
-        response_dict = json.loads(out.data)
+        response_dict = json.loads(out.data.decode("utf-8"))
         assert out.status_code == 400
         response_dict.get('message', '').startswith("InvalidParametersError:")
 
     def test_already_in_progress_raises_error(self):
         pn = get_random_personal_number()
         out = self.bankid._authenticate(pn)
-        response_dict = json.loads(out.data)
+        response_dict = json.loads(out.data.decode("utf-8"))
         assert out.status_code == 200
         assert isinstance(uuid.UUID(response_dict.get('orderRef'), version=4), uuid.UUID)
         assert isinstance(uuid.UUID(response_dict.get('autoStartToken'), version=4), uuid.UUID)
         out2 = self.bankid._authenticate(pn)
         assert out2.status_code == 409
-        response_dict = json.loads(out2.data)
+        response_dict = json.loads(out2.data.decode("utf-8"))
         assert response_dict.get('message', '').startswith("AlreadyInProgressError:")
