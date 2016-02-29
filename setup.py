@@ -29,6 +29,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import os
+import sys
 from setuptools import setup
 
 # Get the long description from the README file
@@ -40,7 +41,7 @@ except:
 
 setup(
     name='Flask-PyBankID',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/hbldh/flask-pybankid/',
     license='MIT',
     author='Henrik Blidh',

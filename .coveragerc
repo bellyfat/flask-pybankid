@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = flask-pybankid
+include = */flask-pybankid/*
+omit =
+    */setup.py
