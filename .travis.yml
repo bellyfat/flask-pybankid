@@ -11,5 +11,7 @@ branches:
     - develop
 install:
   - "pip install pytest"
+  - "pip install pytest-cov"
+  - "pip install python-coveralls"
   - "pip install -r requirements.txt -e ."
 script: py.test tests --cov flask_pybankid --cov-report term-missing
