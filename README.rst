@@ -7,6 +7,8 @@ Flask-PyBankID
     :target: https://pypi.python.org/pypi/Flask-PyBankID/
 .. image:: http://img.shields.io/pypi/dm/Flask-PyBankID.svg
     :target: https://pypi.python.org/pypi/Flask-PyBankID/
+.. image:: https://coveralls.io/repos/github/hbldh/flask-pybankid/badge.svg?branch=master
+    :target: https://coveralls.io/github/hbldh/flask-pybankid?branch=master
 
 A Flask tool for using `PyBankID <https://github.com/hbldh/pybankid>`_ on your site.
 
