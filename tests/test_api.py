@@ -97,6 +97,19 @@ class TestFlaskPyBankID(unittest.TestCase):
         response_dict = json.loads(collect_status.data.decode("utf-8"))
         assert response_dict.get('progressStatus') in ('OUTSTANDING_TRANSACTION', 'NO_CLIENT')
 
+    def test_sign_and_collect(self):
+        """Sign call and then collect with the returned orderRef UUID."""
+
+        out = self.bankid._sign("The data to be signed", get_random_personal_number())
+        assert out.status_code == 200
+        response_dict = json.loads(out.data.decode("utf-8"))
+        # UUID.__init__ performs the UUID compliance assertion.
+        assert isinstance(uuid.UUID(response_dict.get('orderRef'), version=4), uuid.UUID)
+        collect_status = self.bankid._collect(response_dict.get('orderRef'))
+        assert collect_status.status_code == 200
+        response_dict = json.loads(collect_status.data.decode("utf-8"))
+        assert response_dict.get('progressStatus') in ('OUTSTANDING_TRANSACTION', 'NO_CLIENT')
+
     def test_invalid_orderref_raises_error(self):
         out = self.bankid._collect('invalid-uuid')
         response_dict = json.loads(out.data.decode("utf-8"))

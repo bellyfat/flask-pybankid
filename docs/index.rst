@@ -1,5 +1,11 @@
-Flask-PyBankID
-==============
+.. Flask-PyBankID documentation master file, created by
+   sphinx-quickstart on Fri Mar 18 17:22:35 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Flask - PyBankID
+================
+
 
 .. image:: https://travis-ci.org/hbldh/flask-pybankid.svg?branch=master
     :target: https://travis-ci.org/hbldh/flask-pybankid
@@ -12,8 +18,6 @@ Flask-PyBankID
 
 A Flask extension for using `PyBankID <https://github.com/hbldh/pybankid>`_ on your site.
 
-An `example web application using PyBankID and Flask-PyBankID <https://github.com/hbldh/pybankid-example-app>`_
-exists and can be found in deployed state on `Heroku <https://bankid-example-app.herokuapp.com/>`_.
 
 Installation
 ------------
@@ -29,11 +33,6 @@ You can install the latest development snapshot like so:
 .. code-block:: bash
 
     $ pip install https://github.com/hbldh/flask-pybankid/tarball/master#egg=Flask-PyBankID
-
-Development
------------
-
-Source code is hosted in `GitHub <https://github.com/hbldh/flask-pybankid>`_.
 
 
 Usage
@@ -131,22 +130,18 @@ Collect example
         });
     });
 
-Testing
--------
 
-The Flask-PyBankID solution can be tested as such:
+API
+---
 
-.. code-block:: bash
+.. automodule:: flask_pybankid
+   :members:
 
-    python setup.py test
 
-or by using `pytest`:
+Indices and tables
+==================
 
-.. code-block:: bash
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
-    py.test tests/
-
-More Info
----------
-
-* `BankID information for Relying Partner <https://www.bankid.com/bankid-i-dina-tjanster/rp-info>`_

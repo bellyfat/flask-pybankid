@@ -24,6 +24,32 @@ except ImportError:
 
 
 class PyBankID(object):
+    """The class handling the PyBankID client.
+
+    It can be used when initiating the Flask app:
+
+    .. code-block:: python
+
+        from flask import Flask
+        from flask_pybankid import PyBankID
+
+        app = Flask(__name__)
+        bankid = PyBankID(app)
+
+    Configuration of the BankID client is done via parameters to Flask:
+
+    .. code-block:: python
+
+        PYBANKID_CERT_PATH = 'path/to/certificate.pem'
+        PYBANKID_KEY_PATH = 'path/to/key.pem'
+        PYBANKID_TEST_SERVER = True
+
+    Should several BankID clients with different settings be desired, one
+    can change the prefix `PYBANKID` to an arbitrarily chosen prefix instead,
+    and initiate the :class:`~PyBankID` extension with the extra
+    keyword `config_prefix='MY_PREFIX'`
+
+    """
 
     def __init__(self, app=None, config_prefix='PYBANKID'):
         self.app = app
@@ -31,6 +57,19 @@ class PyBankID(object):
             self.init_app(app, config_prefix)
 
     def init_app(self, app, config_prefix='PYBANKID'):
+        """Initialize the `app` for use with this :class:`~PyBankID`. This is
+        called automatically if `app` is passed to :meth:`~PyBankID.__init__`.
+
+        The app is configured according to the configuration variables
+        ``PREFIX_CERT_PATH``, ``PREFIX_KEY_PATH`` and ``PREFIX_TEST_SERVER``,
+         where "PREFIX" defaults to "PYBANKID".
+
+        :param flask.Flask app: the application to configure for use with
+           this :class:`~PyBankID`
+        :param str config_prefix: determines the set of configuration
+           variables used to configure this :class:`~PyBankID`.
+
+        """
         if 'pybankid' not in app.extensions:
             app.extensions['pybankid'] = {}
 
@@ -60,6 +99,12 @@ class PyBankID(object):
 
     @property
     def client(self):
+        """The automatically created :class:`~bankid.client.BankIDClient` object.
+
+        :return: The BankID client.
+        :rtype: :py:class:bankid.client.BankIDClient`
+
+        """
         ctx = stack.top
         attr_name = self._config_key('client')
         if ctx is not None:
@@ -104,12 +149,21 @@ class PyBankID(object):
 
     @staticmethod
     def handle_exception(error):
+        """Simple method for handling exceptions raised by `PyBankID`.
+
+        :param flask_pybankid.FlaskPyBankIDError error: The exception to handle.
+        :return:
+        :rtype: dict
+
+        """
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         return response
 
 
 class FlaskPyBankIDError(Exception):
+    """An exception wrapper to handle error output to JSON in a simple way."""
+
     status_code = 400
 
     def __init__(self, message, status_code=None, payload=None):
@@ -121,11 +175,24 @@ class FlaskPyBankIDError(Exception):
 
     @classmethod
     def create_from_pybankid_exception(cls, exception):
+        """Class method for initiating from a `PyBankID` exception.
+
+        :param bankid.exceptions.BankIDError exception:
+        :return: The wrapped exception.
+        :rtype: :py:class:`flask_pybankid.FlaskPyBankIDError`
+
+        """
         return cls("{0}: {1}".format(
             exception.__class__.__name__, str(exception)),
             _exception_class_to_status_code.get(exception.__class__))
 
     def to_dict(self):
+        """Create a dict representation of this exception.
+
+        :return: The dictionary representation.
+        :rtype: dict
+
+        """
         rv = dict(self.payload or ())
         rv['message'] = self.message
         return rv
@@ -142,5 +209,4 @@ _exception_class_to_status_code = {
     exceptions.RetryError: 500,
     exceptions.InternalError: 500,
     exceptions.InvalidParametersError: 400,
-
 }

@@ -35,7 +35,6 @@ class FlaskPyMongoConfigTest(unittest.TestCase):
         self.context = self.app.test_request_context('/')
         self.context.push()
 
-
     def tearDown(self):
         self.context.pop()
         try:
