@@ -41,7 +41,7 @@ except:
 
 setup(
     name='Flask-PyBankID',
-    version='0.1.2rc1',
+    version='0.1.3rc2',
     url='https://github.com/hbldh/flask-pybankid/',
     license='MIT',
     author='Henrik Blidh',

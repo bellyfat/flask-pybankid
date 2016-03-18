@@ -3,6 +3,9 @@ Flask-PyBankID
 
 .. image:: https://travis-ci.org/hbldh/flask-pybankid.svg?branch=master
     :target: https://travis-ci.org/hbldh/flask-pybankid
+.. image:: https://readthedocs.org/projects/flask-pybankid/badge/?version=latest
+    :target: http://flask-pybankid.readthedocs.org/en/latest/?badge=latest
+    :alt: Documentation Status
 .. image:: http://img.shields.io/pypi/v/Flask-PyBankID.svg
     :target: https://pypi.python.org/pypi/Flask-PyBankID/
 .. image:: http://img.shields.io/pypi/dm/Flask-PyBankID.svg

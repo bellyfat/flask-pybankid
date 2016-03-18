@@ -99,8 +99,8 @@ class TestFlaskPyBankID(unittest.TestCase):
 
     def test_sign_and_collect(self):
         """Sign call and then collect with the returned orderRef UUID."""
-
-        out = self.bankid._sign("The data to be signed", get_random_personal_number())
+        # TODO: Add userVisibleData to the request that _sign reads.
+        out = self.bankid._sign(get_random_personal_number())
         assert out.status_code == 200
         response_dict = json.loads(out.data.decode("utf-8"))
         # UUID.__init__ performs the UUID compliance assertion.
