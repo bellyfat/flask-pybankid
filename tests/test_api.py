@@ -21,6 +21,11 @@ import json
 import uuid
 import unittest
 
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
+
 import flask
 
 import bankid
@@ -98,9 +103,12 @@ class TestFlaskPyBankID(unittest.TestCase):
         assert response_dict.get('progressStatus') in ('OUTSTANDING_TRANSACTION', 'NO_CLIENT')
 
     def test_sign_and_collect(self):
-        """Sign call and then collect with the returned orderRef UUID."""
+        """Sign call a.nd then collect with the returned orderRef UUID."""
         # TODO: Add userVisibleData to the request that _sign reads.
-        out = self.bankid._sign(get_random_personal_number())
+        c = self.app.test_client()
+        out = c.get('/sign/{0}?{1}'.format(get_random_personal_number(),
+                                           urlencode(dict(userVisibleData='Text to sign'))),
+                    follow_redirects=True)
         assert out.status_code == 200
         response_dict = json.loads(out.data.decode("utf-8"))
         # UUID.__init__ performs the UUID compliance assertion.

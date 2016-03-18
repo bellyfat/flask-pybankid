@@ -128,7 +128,7 @@ class PyBankID(object):
     def _sign(self, personal_number):
         text_to_sign = request.args.get('userVisibleData', '')
         try:
-            response = self.client.sign(text_to_sign.encode('utf8'), personal_number)
+            response = self.client.sign(text_to_sign, personal_number)
         except exceptions.BankIDError as e:
             return self.handle_exception(FlaskPyBankIDError.create_from_pybankid_exception(e))
         except Exception as e:
