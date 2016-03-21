@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-__init__.py
-===========
+flask_pybankid  -- Flask Extension for PyBankID
+===============================================
 
-hbldh <henrik.blidh@nedomkull.com>
+Created by hbldh <henrik.blidh@nedomkull.com>
+
 Created on 2015-11-19
 
 """
@@ -99,10 +100,10 @@ class PyBankID(object):
 
     @property
     def client(self):
-        """The automatically created :class:`~bankid.client.BankIDClient` object.
+        """The automatically created :py:class:`bankid.client.BankIDClient` object.
 
         :return: The BankID client.
-        :rtype: :py:class:bankid.client.BankIDClient`
+        :rtype: :py:class:`bankid.client.BankIDClient`
 
         """
         ctx = stack.top
@@ -152,7 +153,7 @@ class PyBankID(object):
         """Simple method for handling exceptions raised by `PyBankID`.
 
         :param flask_pybankid.FlaskPyBankIDError error: The exception to handle.
-        :return:
+        :return: The exception represented as a dictionary.
         :rtype: dict
 
         """
@@ -179,7 +180,7 @@ class FlaskPyBankIDError(Exception):
 
         :param bankid.exceptions.BankIDError exception:
         :return: The wrapped exception.
-        :rtype: :py:class:`flask_pybankid.FlaskPyBankIDError`
+        :rtype: :py:class:`~FlaskPyBankIDError`
 
         """
         return cls("{0}: {1}".format(
