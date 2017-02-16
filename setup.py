@@ -28,34 +28,27 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-import os
-import sys
+from codecs import open
 from setuptools import setup
 
-# Get the long description from the README file
-try:
-    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.rst')) as f:
-        long_description = f.read()
-except:
-    long_description = __doc__
+
+def read(f):
+    return open(f, encoding='utf-8').read()
 
 setup(
     name='Flask-PyBankID',
-    version='0.1.3',
+    version='0.2.0',
     url='https://github.com/hbldh/flask-pybankid/',
     license='MIT',
     author='Henrik Blidh',
     author_email='henrik.blidh@nedomkull.com',
     description='Flask Extension for PyBankID client',
-    long_description=long_description,
+    long_description=read('README.rst'),
     py_modules=['flask_pybankid'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',
-    install_requires=[
-        'Flask>=0.10',
-        'pybankid>=0.3.4'
-    ],
+    install_requires=read('requirements.txt').strip().splitlines(),
     test_suite="tests",
     classifiers=[
         'Environment :: Web Environment',
@@ -70,6 +63,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Security',
         'Topic :: Utilities',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
