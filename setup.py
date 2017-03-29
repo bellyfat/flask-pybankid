@@ -37,7 +37,7 @@ def read(f):
 
 setup(
     name='Flask-PyBankID',
-    version='0.3.0',
+    version='0.3.1',
     url='https://github.com/hbldh/flask-pybankid/',
     license='MIT',
     author='Henrik Blidh',
