@@ -6,9 +6,8 @@
 Flask - PyBankID
 ================
 
-
-.. image:: https://travis-ci.org/hbldh/flask-pybankid.svg?branch=master
-    :target: https://travis-ci.org/hbldh/flask-pybankid
+.. image:: https://dev.azure.com/hbldh/github/_apis/build/status/hbldh.flask-pybankid?branchName=master
+    :target: https://dev.azure.com/hbldh/github/_build/latest?definitionId=3&branchName=master
 .. image:: https://readthedocs.org/projects/flask-pybankid/badge/?version=latest
     :target: http://flask-pybankid.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status

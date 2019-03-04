@@ -1,2 +1,2 @@
 Flask>=0.10
-pybankid>=0.5.2
+pybankid>=0.8.0

@@ -70,14 +70,15 @@ def get_random_personal_number():
 
 class TestFlaskPyBankID(unittest.TestCase):
     def setUp(self):
-        self.certificate_file, self.key_file = \
-            bankid.create_bankid_test_server_cert_and_key(tempfile.gettempdir())
+        self.certificate_file, self.key_file = bankid.create_bankid_test_server_cert_and_key(
+            tempfile.gettempdir()
+        )
 
-        self.app = flask.Flask('test')
-        self.app.config['PYBANKID_CERT_PATH'] = self.certificate_file
-        self.app.config['PYBANKID_KEY_PATH'] = self.key_file
-        self.app.config['PYBANKID_TEST_SERVER'] = True
-        self.context = self.app.test_request_context('/')
+        self.app = flask.Flask("test")
+        self.app.config["PYBANKID_CERT_PATH"] = self.certificate_file
+        self.app.config["PYBANKID_KEY_PATH"] = self.key_file
+        self.app.config["PYBANKID_TEST_SERVER"] = True
+        self.context = self.app.test_request_context("/")
         self.context.push()
         self.bankid = PyBankID(self.app)
 
@@ -96,42 +97,60 @@ class TestFlaskPyBankID(unittest.TestCase):
         assert out.status_code == 200
         response_dict = json.loads(out.data.decode("utf-8"))
         # UUID.__init__ performs the UUID compliance assertion.
-        assert isinstance(uuid.UUID(response_dict.get('orderRef'), version=4), uuid.UUID)
-        collect_status = self.bankid._collect(response_dict.get('orderRef'))
+        assert isinstance(
+            uuid.UUID(response_dict.get("orderRef"), version=4), uuid.UUID
+        )
+        collect_status = self.bankid._collect(response_dict.get("orderRef"))
         assert collect_status.status_code == 200
         response_dict = json.loads(collect_status.data.decode("utf-8"))
-        assert response_dict.get('progressStatus') in ('OUTSTANDING_TRANSACTION', 'NO_CLIENT')
+        assert response_dict.get("progressStatus") in (
+            "OUTSTANDING_TRANSACTION",
+            "NO_CLIENT",
+        )
 
     def test_sign_and_collect(self):
         """Sign call a.nd then collect with the returned orderRef UUID."""
         # TODO: Add userVisibleData to the request that _sign reads.
         c = self.app.test_client()
-        out = c.get('/sign/{0}?{1}'.format(get_random_personal_number(),
-                                           urlencode(dict(userVisibleData='Text to sign'))),
-                    follow_redirects=True)
+        out = c.get(
+            "/sign/{0}?{1}".format(
+                get_random_personal_number(),
+                urlencode(dict(userVisibleData="Text to sign")),
+            ),
+            follow_redirects=True,
+        )
         assert out.status_code == 200
         response_dict = json.loads(out.data.decode("utf-8"))
         # UUID.__init__ performs the UUID compliance assertion.
-        assert isinstance(uuid.UUID(response_dict.get('orderRef'), version=4), uuid.UUID)
-        collect_status = self.bankid._collect(response_dict.get('orderRef'))
+        assert isinstance(
+            uuid.UUID(response_dict.get("orderRef"), version=4), uuid.UUID
+        )
+        collect_status = self.bankid._collect(response_dict.get("orderRef"))
         assert collect_status.status_code == 200
         response_dict = json.loads(collect_status.data.decode("utf-8"))
-        assert response_dict.get('progressStatus') in ('OUTSTANDING_TRANSACTION', 'NO_CLIENT')
+        assert response_dict.get("progressStatus") in (
+            "OUTSTANDING_TRANSACTION",
+            "NO_CLIENT",
+        )
 
     def test_invalid_orderref_raises_error(self):
-        out = self.bankid._collect('invalid-uuid')
+        out = self.bankid._collect("invalid-uuid")
         response_dict = json.loads(out.data.decode("utf-8"))
         assert out.status_code == 400
-        response_dict.get('message', '').startswith("InvalidParametersError:")
+        response_dict.get("message", "").startswith("InvalidParametersError:")
 
     def test_already_in_progress_raises_error(self):
         pn = get_random_personal_number()
         out = self.bankid._authenticate(pn)
         response_dict = json.loads(out.data.decode("utf-8"))
         assert out.status_code == 200
-        assert isinstance(uuid.UUID(response_dict.get('orderRef'), version=4), uuid.UUID)
-        assert isinstance(uuid.UUID(response_dict.get('autoStartToken'), version=4), uuid.UUID)
+        assert isinstance(
+            uuid.UUID(response_dict.get("orderRef"), version=4), uuid.UUID
+        )
+        assert isinstance(
+            uuid.UUID(response_dict.get("autoStartToken"), version=4), uuid.UUID
+        )
         out2 = self.bankid._authenticate(pn)
         assert out2.status_code == 409
         response_dict = json.loads(out2.data.decode("utf-8"))
-        assert response_dict.get('message', '').startswith("AlreadyInProgressError:")
+        assert response_dict.get("message", "").startswith("AlreadyInProgressError:")
